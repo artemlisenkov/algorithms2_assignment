@@ -1,4 +1,4 @@
-# Algorithms II — Pattern Matching Benchmark
+# Algorithms II
 ### By Artem Lisenkov
 [GitHub Project](https://github.com/artemlisenkov/algorithms2_assignment?tab=readme-ov-file)
 
@@ -13,148 +13,205 @@ This project compares six pattern matching algorithms:
 - KMP (Knuth-Morris-Pratt)
 - FSM (Finite State Machine)
 - Rabin-Karp
-- Gusfield Z (Z Algorithm)
-
-### Tested With:
-
-- Short patterns
-- Long patterns
+- Gusfield Z
 
 ---
 
-## Pattern Matching Algorithm Comparison
+## Part A — "Mom bought me a new computer"
 
-In this project, I compare the runtime performance of six algorithms using real book text from *The Martian* by Andy Weir. All algorithms are implemented in **Java**.
+### Pattern Matching Algorithm Comparison on Different Size Texts
+
+In this project, I compare six pattern matching algorithms using chapters from a book [[1](#1-important-notice)]. My goal is to evaluate their performance on various text lengths with short and long patterns. I implemented each algorithm in **Java** and measured their runtime.
 
 ---
 
-## Algorithms Description
+### Algorithms Description
 
 **Brute-force**  
-Checks each line shift one character at a time, comparing character-by-character. Very slow, especially on large strings.
+Compares every possible shift character-by-character. Very slow on large texts.
 
 **Sunday**  
-Improved brute-force: if there is a mismatch, shifts based on the character immediately after the first-appeared window. Works faster, especially for large alphabets.
+Improves Brute-force by skipping based on the next character after the current window. Efficient on large alphabets.
 
 **KMP**  
-Uses a prefix table to avoid starting the comparison over after a mismatch. Effective for repetitive patterns.
+Uses a prefix table to avoid rechecking matched characters. Works well for repeated patterns.
 
 **FSM**  
-Creates an automaton (states and transitions) for searching. A table of states is built once, then searched in one pass. Good for frequent searches of a single pattern.
+Builds an automaton for the pattern. Great for repeated searches, expensive for one-offs.
 
 **Rabin-Karp**  
-Hashes the pattern and each window of text. Compares hashes, and only if there is a match — the strings themselves. Works fast for multiple searches, but can give collisions.
+Hashes the pattern and window. Fast on multiple searches, but suffers from hash collisions.
 
 **Z Algorithm**  
-Constructs a Z-array showing the lengths of matches to the beginning of the string. Very fast and clean, especially if you need to search many times.
+Builds a Z-array for prefix matching. Extremely fast, especially for repeated exact patterns.
 
 ---
 
-## Prerequisites
+### Prerequisites
 
-Tested each algorithm with:
+Tested on:
 
-- **Short pattern:** `"I don’t even know who’ll read this"`
-- **Long pattern:** a full paragraph from the same book
-- **Text sizes:** 1,000; 10,000; 100,000; 500,000 characters
-- Each test repeated 3–5 times, average runtime recorded
+- Short pattern: `"I don’t even know who’ll read this"`
+- Long pattern: a full paragraph from the same book
+- Text lengths: 1,000; 10,000; 100,000; 500,000 characters
+- Each test repeated 3–5 times; average runtime recorded
 
 ---
 
-## Results & Analysis
+### Results & Analysis
 
-To improve readability, FSM was plotted separately due to its significantly higher runtime caused by preprocessing.
-
-### Visual Benchmark Results
+To improve readability, FSM is plotted separately due to its high preprocessing cost.
 
 #### Short Pattern
 ![Short Pattern Benchmark](assets/noFSM_short.png)
 
+#### Short Pattern (excluding FSM)
+
+- Brute-force was fastest on tiny texts, but inefficient at scale
+- Sunday improved early and stabilized
+- KMP and Rabin-Karp showed consistent performance
+
+---
+
 #### Long Pattern
 ![Long Pattern Benchmark](assets/noFSM_long.png)
 
-#### FSM Only — Short Pattern
+#### Long Pattern (excluding FSM)
+
+- Brute-force performed poorly by 10k+
+- Sunday and Rabin-Karp were similar
+- KMP showed best overall consistency
+
+---
+
+#### FSM (Short Pattern)
 ![FSM Short Pattern](assets/FSM_short.png)
 
-#### FSM Only — Long Pattern
+#### FSM (Long Pattern)
 ![FSM Long Pattern](assets/FSM_long.png)
 
----
+#### FSM Performance
 
-### 🔍 Observations
-
-#### Short Pattern (excluding FSM)
-- Brute-force was fastest on small texts but quickly plateaued.
-- Sunday improved significantly at first but stabilized.
-- KMP and Rabin-Karp remained consistent and competitive.
-
-#### Long Pattern (excluding FSM)
-- Brute-force scaled poorly beyond 10k.
-- Sunday and Rabin-Karp were similar, though RK had some inconsistency.
-- KMP had the best overall consistency.
-
-#### FSM (separate)
-- High preprocessing time (200ms+ on even 1k).
-- Runtime slightly improved with larger text sizes.
-- Only worth using when pattern is reused frequently.
+- Very high setup time (~200ms on 1k text)
+- Matching becomes efficient post-setup
+- Suitable only for repeated use cases
 
 ---
 
-## Algorithm Use Cases
+### Algorithm Use Cases
 
 **Brute-force**
-- best for: very small texts, temporary searches
-- worst for: anything over a few KB
+- best for: very small texts, simple searches
+- worst for: anything large
 
 **Sunday**
 - best for: short patterns, large alphabets
-- worst for: long patterns or very repetitive data
+- worst for: long patterns or repetitive text
 
 **KMP**
-- best for: long texts, repeated patterns
+- best for: repeated, long patterns
 - worst for: short patterns with low redundancy
 
 **FSM**
-- best for: repeated searches of same pattern
-- worst for: one-off search (high setup time)
+- best for: repeated use of the same pattern
+- worst for: one-off searches due to setup cost
 
 **Rabin-Karp**
-- best for: searching multiple patterns
-- worst for: single-pattern with high collision risk
+- best for: many patterns at once
+- worst for: one pattern with hash collisions
 
 **Z Algorithm**
-- best for: fast one-pattern matching
-- worst for: multiple patterns — not built for it
+- best for: fast exact matching
+- worst for: multi-pattern scenarios
 
 ---
 
-## Conclusion
+### Part A Conclusion
 
-Not all algorithms are created equal.  
-Brute-force is easy but doesn’t scale. KMP and Z Algorithm are reliable and scalable. FSM is only worth it when the pattern is reused many times. Rabin-Karp and Sunday have niche uses, especially when fast skipping or hashing helps.
+Not all algorithms are created equal. Brute-force is simple but slow. KMP and Z Algorithm provide the best scaling behavior. FSM is powerful but impractical for one-time use.
 
-Choosing the right algorithm depends on the text, the pattern, and your constraints.
+Algorithm choice depends on context: text size, pattern nature, and expected reuse.
 
 ---
 
-## Important Notice
+## Part B — "Wacky Races"
 
-The text samples used in this project are taken from *The Martian* by Andy Weir. This book is protected under copyright law. These excerpts have been used solely for educational and non-commercial purposes — specifically, to benchmark and compare the runtime performance of string matching algorithms as part of a university assignment.
+This section explores specific cases where one algorithm significantly outperforms another. Each test uses:
+
+- T (text) ≥ 100kB
+- P (pattern) targeting algorithm-specific behavior
+- Measured 5× and averaged
+
+---
+
+### Output Screenshot
+
+![Results](assets/results_b.png)
+
+---
+
+### Case 1: Gusfield Z vs Binary Sunday
+
+- **T:** `"aaaaaaabaaa..."` (repeating)
+- **P:** `"bbbbaaa"`
+- **Result:**
+    - Sunday: 2.820 ms
+    - ZAlgorithm: 0.533 ms
+    - ⟶ **Z is 5.3× faster**
+
+**Why:**  
+Z skips over repetition efficiently. Sunday couldn't leverage its jump logic on uniform input.
+
+---
+
+### Case 2: KMP vs Rabin-Karp
+
+- **T:** `"abcabcabc..."`
+- **P:** `"abd"`
+- **Result:**
+    - KMP: 1.591 ms
+    - RK: 1.388 ms
+    - ⟶ KMP only **0.87×** — not faster
+
+**Why:**  
+Hashing helped Rabin-Karp. KMP’s prefix table didn’t bring major advantage.
+
+---
+
+### Case 3: Rabin-Karp vs Sunday
+
+- **T:** random + inserted exact match once
+- **P:** `"thispatternisveryspecificandonlyappearsonce"`
+- **Result:**
+    - RK: 0.643 ms
+    - Sunday: 0.089 ms
+    - ⟶ Sunday is **7.2× faster**
+
+**Why:**  
+RK's hashing overhead was too much for a single hit. Sunday jumped right to it.
+
+---
+
+### Part B Conclusion
+
+None of the designed test cases confirmed the intended `2×` result in the expected direction. In two cases, the “slower” algorithm was actually faster.
+
+Lesson: performance depends deeply on the input shape, not just theoretical complexity.
+
+---
+
+## [1] Important Notice
+
+The text samples used in this project are taken from *The Martian* by Andy Weir. This book is protected under copyright law. The excerpts have been used solely for educational and non-commercial purposes — specifically to benchmark and compare the runtime performance of string matching algorithms for a university assignment.
 
 No redistribution or reuse of the book’s content is intended or permitted beyond this project.  
 **All rights remain with the original copyright holder(s).**
 
-You can obtain the book legally here:
-- [www.penguinrandomhouse.com](https://www.penguinrandomhouse.com/books/319998/the-martian-by-andy-weir/)
-- [www.amazon.com](https://www.amazon.com/Martian-Andy-Weir/dp/0553418025/)
+Buy the book legally from:
+
+- [penguinrandomhouse.com](https://www.penguinrandomhouse.com/books/319998/the-martian-by-andy-weir/)
+- [amazon.com](https://www.amazon.com/Martian-Andy-Weir/dp/0553418025)
 
 ---
 
-## Files Included
-
-- `src/` – all Java source code (algorithms, runner, parser)
-- `benchmark_short.csv` – benchmark results for short pattern
-- `benchmark_long.csv` – benchmark results for long pattern
-- `assets/` – images of graphs used in this README
-- `LICENSE` – project license and fair use statement
-- 
+*I'm cooked.*
