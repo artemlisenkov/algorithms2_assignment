@@ -4,6 +4,11 @@
 
 ---
 
+# ASSIGNMENT I
+# PART ONE
+
+---
+
 ## Algo Overview
 
 This project compares six pattern matching patternmatch:
@@ -215,3 +220,111 @@ Buy the book legally from:
 ---
 
 *I'm cooked.*
+
+---
+
+# ASSIGNMENT II
+# PART ONE
+
+---
+
+## Part A — "I spell rite"
+
+In this task, I implemented a spell checker that verifies whether each word from a given text exists in a dictionary.  
+The main goal was to benchmark different data structures based on two aspects:
+- **Build Time**: Time to load dictionary words into the structure
+- **Check Time**: Time to verify input text words against the dictionary
+
+### Data Structures Compared
+
+- **Naive List**: Linear scan using `.contains()`
+- **TreeSet**: Balanced Binary Search Tree (O(log n) operations)
+- **HashSet**: Hash table structure offering near O(1) lookup
+- **Trie**: Custom prefix tree for character-by-character lookup
+
+### Inputs and Setup
+
+- Dictionary size: 5,000 randomly generated words
+- Input text: 20,000 words (90% correct, 10% intentionally incorrect)
+- Test sizes: 1,000; 5,000; 10,000; 20,000 words
+- All tests repeated 5 times and averaged
+
+### Visual Benchmark Results
+
+#### Dictionary Build Time
+![spell_build.png](assets/spell_build.png)
+
+#### Spell Check Time
+![spell_check.png](assets/spell_check.png)
+
+### Analysis and Observations
+
+- **Naive List** is easy to build but completely impractical for checking large inputs.
+- **TreeSet** scales reasonably but is consistently slower than HashSet.
+- **HashSet** is the fastest and most scalable for both building and checking.
+- **Trie** is slower to build compared to HashSet but offers consistent checking speed, making it a strong candidate for prefix-related tasks.
+
+### Conclusion
+
+HashSet is the most practical solution for simple spell checking.  
+Trie structures should be preferred when prefix matching or autocomplete features are required.  
+Naive list is only useful for demonstrating the impact of poor data structure choices.
+
+---
+
+## Part B - Triwizard Tournament
+
+This task simulates a race through a labyrinth between three wizards, each starting from a specific position and moving at a known speed.  
+The objective is to predict which wizard will reach the exit first, using the shortest possible path and following strict algorithmic constraints.
+
+### Problem Overview
+
+Given:
+- A maze represented by `#` (walls), `.` (corridors), and `E` (exit).
+- Starting positions for wizards `A`, `B`, and `C`.
+- Their respective speeds in corridors per minute.
+
+The key constraint: **only one BFS traversal** must be performed.
+
+### Algorithm Strategy
+
+- **Reverse BFS**: Instead of running BFS from each wizard, run BFS once from the exit.
+- **Distance Map**: For every walkable cell, record its distance to the exit.
+- **Arrival Time Calculation**:
+
+```
+arrivalTime = distance_to_exit / speed
+```
+
+- The wizard with the lowest arrival time is predicted to win.
+
+### Sample Output
+
+```
+=== Race Results ===
+Wizard A: distance=34  speed=2  arrival=17.00 units
+Wizard B: distance=33  speed=3  arrival=11.00 units
+Wizard C: distance=24  speed=1  arrival=24.00 units
+Winner: Wizard B (arrival: 11.00 units)
+```
+
+*Note*: Units represent modelled "minutes" to escape, not real execution time.
+
+### Implementation Structure
+
+- `MazeMap.java`: loads maze and wizard data
+- `Wizard.java`: holds wizard attributes
+- `Position.java`: immutable 2D coordinate
+- `MazeSolver.java`: runs BFS and computes arrival times
+
+### Complexity Analysis
+
+- **Time Complexity**: O(V + E) for BFS traversal
+- **Space Complexity**: O(V) for storing distances
+
+### Conclusion
+
+Using reverse BFS satisfies the one-pass constraint while ensuring efficient computation of shortest paths for all wizards.  
+Arrival times reflect the competition's rules fairly, and the model scales well for larger labyrinths.
+
+
