@@ -4,10 +4,7 @@
 
 ---
 
-# ASSIGNMENT I
-# PART ONE
-
----
+# ASSIGNMENT I : PART ONE
 
 ## Algo Overview
 
@@ -223,8 +220,7 @@ Buy the book legally from:
 
 ---
 
-# ASSIGNMENT II
-# PART ONE
+# ASSIGNMENT II : PART ONE
 
 ---
 
