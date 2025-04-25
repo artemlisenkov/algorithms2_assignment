@@ -1,4 +1,4 @@
-package algorithms;
+package patternmatch;
 
 public class RabinKarp implements PatternMatcher {
     private static final int BASE = 256;

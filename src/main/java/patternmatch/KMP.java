@@ -1,4 +1,4 @@
-package algorithms;
+package patternmatch;
 
 public class KMP implements PatternMatcher {
     @Override

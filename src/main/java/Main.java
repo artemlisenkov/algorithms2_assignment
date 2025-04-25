@@ -1,4 +1,4 @@
-import algorithms.*;
+import patternmatch.*;
 import utils.*;
 
 import java.io.IOException;
@@ -117,6 +117,6 @@ public class Main {
             long end = System.nanoTime();
             total += (end - start);
         }
-        return total / REPEATS / 1_000_000.0;
+        return (double) total / REPEATS / 1_000_000.0;
     }
 }

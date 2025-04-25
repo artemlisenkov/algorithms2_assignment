@@ -6,7 +6,7 @@
 
 ## Algo Overview
 
-This project compares six pattern matching algorithms:
+This project compares six pattern matching patternmatch:
 
 - Brute-force
 - Sunday
@@ -21,7 +21,7 @@ This project compares six pattern matching algorithms:
 
 ### Pattern Matching Algorithm Comparison on Different Size Texts
 
-In this project, I compare six pattern matching algorithms using chapters from a book [[1](#1-important-notice)]. My goal is to evaluate their performance on various text lengths with short and long patterns. I implemented each algorithm in **Java** and measured their runtime.
+In this project, I compare six pattern matching patternmatch using chapters from a book [[1](#1-important-notice)]. My goal is to evaluate their performance on various text lengths with short and long patterns. I implemented each algorithm in **Java** and measured their runtime.
 
 ---
 
@@ -128,7 +128,7 @@ To improve readability, FSM is plotted separately due to its high preprocessing 
 
 ### Part A Conclusion
 
-Not all algorithms are created equal. Brute-force is simple but slow. KMP and Z Algorithm provide the best scaling behavior. FSM is powerful but impractical for one-time use.
+Not all patternmatch are created equal. Brute-force is simple but slow. KMP and Z Algorithm provide the best scaling behavior. FSM is powerful but impractical for one-time use.
 
 Algorithm choice depends on context: text size, pattern nature, and expected reuse.
 
@@ -202,7 +202,7 @@ Lesson: performance depends deeply on the input shape, not just theoretical comp
 
 ## [1] Important Notice
 
-The text samples used in this project are taken from *The Martian* by Andy Weir. This book is protected under copyright law. The excerpts have been used solely for educational and non-commercial purposes — specifically to benchmark and compare the runtime performance of string matching algorithms for a university assignment.
+The text samples used in this project are taken from *The Martian* by Andy Weir. This book is protected under copyright law. The excerpts have been used solely for educational and non-commercial purposes — specifically to benchmark and compare the runtime performance of string matching patternmatch for a university assignment.
 
 No redistribution or reuse of the book’s content is intended or permitted beyond this project.  
 **All rights remain with the original copyright holder(s).**

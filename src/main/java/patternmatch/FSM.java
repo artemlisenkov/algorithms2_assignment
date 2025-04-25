@@ -1,4 +1,4 @@
-package algorithms;
+package patternmatch;
 
 import java.util.HashMap;
 import java.util.Map;
