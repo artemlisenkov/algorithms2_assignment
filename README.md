@@ -222,8 +222,6 @@ Buy the book legally from:
 
 # ASSIGNMENT II : PART ONE
 
----
-
 ## Part A — "I spell rite"
 
 In this task, I implemented a spell checker that verifies whether each word from a given text exists in a dictionary.  
