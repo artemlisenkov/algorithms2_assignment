@@ -53,27 +53,30 @@ public class WildCardUtil {
 
     //true if tokens match text starting at index ti.
     public static boolean matchesAt(String text, int ti, List<Token> tokens) {
-        int n = text.length(), t = ti;
+        int n = text.length();
+        int t = ti;
         int pi = 0, lastStar = -1, starMatchPos = -1;
 
-        while (t < n) {
-            if (pi < tokens.size()) {
-                Token tok = tokens.get(pi);
-                switch (tok.getType()) {
-                    case LITERAL:
-                        if (text.charAt(t) == tok.getChar()) {
-                            t++; pi++; continue;
-                        }
-                        break;
-                    case ANY:
-                        t++; pi++; continue;
-                    case STAR:
-                        lastStar = pi++;
-                        starMatchPos = t;
+        // loop until we either run out of text or read the full pattern
+        while (t < n && pi < tokens.size()) {
+            Token tok = tokens.get(pi);
+            switch (tok.getType()) {
+                case LITERAL:
+                    if (text.charAt(t) == tok.getChar()) {
+                        t++; pi++;
                         continue;
-                }
+                    }
+                    break;
+                case ANY:
+                    t++; pi++;
+                    continue;
+                case STAR:
+                    lastStar = pi;
+                    starMatchPos = t;
+                    pi++;
+                    continue;
             }
-            // mismatch and no direct star will cause backtrack if we saw a star
+            // mismatch goto last * if was
             if (lastStar != -1) {
                 pi = lastStar + 1;
                 starMatchPos++;
@@ -82,10 +85,13 @@ public class WildCardUtil {
                 return false;
             }
         }
-        // skip any trailing stars eg * *** (those last 3 will be skipped) (they are so important as me :))
+
+        // skip any remaining *
         while (pi < tokens.size() && tokens.get(pi).getType() == TokenType.STAR) {
             pi++;
         }
-        return (pi == tokens.size());
+
+        // sukces
+        return pi == tokens.size();
     }
 }
