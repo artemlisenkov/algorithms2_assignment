@@ -415,4 +415,83 @@ Winner: Wizard B (arrival: 11.00 units)
 Using reverse BFS satisfies the one-pass constraint while ensuring efficient computation of shortest paths for all wizards.  
 Arrival times reflect the competition's rules fairly, and the model scales well for larger labyrinths.
 
+---
+
+# ASSIGNMENT II : PART TWO
+
+### Problem Statement
+Aunt Petunia is hosting a namesday party with two tables. Some pairs of guests dislike each other and must not sit together. Implement a **non-recursive DFS** to assign each guest to table 0 or 1 so that no edge (dislike) connects two guests at the same table. If no valid seating exists, report a conflict.
+
+### Graph Model
+- **Vertices (V):** guests
+- **Edges (E):** undirected “dislike” relations
+- A valid seating is a 2-coloring of this graph (colors 0 and 1).
+
+### Algorithm (Non-recursive DFS Two-Coloring)
+
+1. **Build adjacency list**
+   ```java
+   Map<String,List<String>> graph = new HashMap<>();
+   for (String g : guests) graph.put(g, new ArrayList<>());
+   for (String[] d : dislikes) {
+     graph.get(d[0]).add(d[1]);
+     graph.get(d[1]).add(d[0]);
+   }
+   ```
+2. **Initialize color map**
+   ```java
+   Map<String,Integer> color = new HashMap<>();
+   for (String g : guests) color.put(g, -1);  // -1 = unvisited
+   ```
+3. **DFS per component**
+   ```java
+   Deque<String> stack = new ArrayDeque<>();
+   for (String start : guests) {
+     if (color.get(start) != -1) continue;
+     color.put(start, 0);
+     stack.push(start);
+
+     while (!stack.isEmpty()) {
+       String u = stack.pop();
+       int next = 1 - color.get(u);
+       for (String v : graph.get(u)) {
+         if (color.get(v) == -1) {
+           color.put(v, next);
+           stack.push(v);
+         } else if (color.get(v).equals(color.get(u))) {
+           throw new IllegalArgumentException(
+             "Conflict: " + u + " & " + v + " at same table"
+           );
+         }
+       }
+     }
+   }
+   ```
+4. **Return**
+   ```java
+   return color;  // Map<guest, table#>
+   ```
+
+**Time Complexity:** _O(|V| + |E|)_  
+**Space Complexity:** _O(|V| + |E|)_
+
+### Unit Tests
+- **Simple chain graph** (bipartite) → no conflicts
+- **Disconnected components** → each colored independently
+- **Odd cycle** → throws `IllegalArgumentException`
+- **No dislikes** → all guests assigned to table 0
+
+_All tests pass_.
+
+### Sample Output
+```text
+Table 0: [Alice, Cathy, Eve]
+Table 1: [Bob, Dave]
+```
+
+```bash
+$ java namesday.NamesdaySeating
+Table 0: [Alice, Cathy, Eve]
+Table 1: [Bob, Dave]
+```
 
